@@ -1,14 +1,19 @@
 # Gathering all the FEC bluk detailed data with the command line and regular expressions
 
-[The Federal Election Commission contains a massive archive](http://www.fec.gov/finance/disclosure/ftpdet.shtml) of individual contributions to U.S. campaigns from 1980 to the current election cycle as simple to read-and-access flat text files. 
+[The Federal Election Commission contains a massive archive](http://www.fec.gov/finance/disclosure/ftpdet.shtml) of U.S. campaign finance data. The data is stored as flat, delmited text files. 
 
-This is its [Detailed Files About Candidates, Parties and Other Committees](http://www.fec.gov/finance/disclosure/ftpdet.shtml)
+The FEC has many pages about data; the one in question is titled:[Detailed Files About Candidates, Parties and Other Committees](http://www.fec.gov/finance/disclosure/ftpdet.shtml)
+
+Among the most interesting datasets are the individual contributions to campaigns -- the FEC has this from 1980 to the current election cycle. This dataset, which includes the identities and self-proclaimed occupations and residences of individual donors, contains a lot of potential insights about the kind of people who donate to particular campaigns. If you've ever used OpenSecrets, [this is where you can see the raw data](http://www.opensecrets.org/indivs/index.php).
+
 
 ## The problem
 
 However, the data is separated by cycle, with each file stored as a separate zip file on the FEC's FTP server. When the data file is unpacked, the text is delimited with __pipes__, and the files are headerless, which means we have to attach the [data headers to each file ourselves](http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml).
 
 And that's before we've even inserted it into a database, nevermind done any actual analysis.
+
+But if we could efficiently collect all the data, starting from 1980 to 2016, then we would have dozens of millions of records to analyze. Stories, such as this [LA Times feature into what Hollywood is donating in this cycle](http://graphics.latimes.com/2016-election-entertainment-donors/), could be repeated across _every election cycle_.
 
 ## The command-line solution
 
@@ -320,8 +325,9 @@ We can use `csvcut -n` to get an idea of what the columns are:
 $ csvcut -n data/all-individuals.csv
 ~~~
 
-The output: 
+The output shows the column names and their indexes:
 
+~~~
     1: CMTE_ID
     2: AMNDT_IND
     3: RPT_TP
@@ -343,11 +349,11 @@ The output:
    19: MEMO_CD
    20: MEMO_TEXT
    21: SUB_ID
+~~~
 
 
 
-
-For actors:
+For actors, directors, etc. who have donated at least in the 4-digits:
 
 ~~~sh
 csvgrep -c 'OCCUPATION' -r '\bACTOR|ACTRESS|MOVIE|DIRECTOR|PRODUCER' \
@@ -440,3 +446,6 @@ CREATE INDEX "indivdonors_transactiondate"
 
 EOF
 ~~~
+
+
+(more to come)
