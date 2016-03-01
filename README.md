@@ -436,14 +436,17 @@ $ sqlite3 fec_data.sqlite \
 
 ### Insert the data in bulk
 
-Note: Plan on taking an hour break or so before this finishes.
+Note: Actually, probably not a good idea to try to insert all the data at once. Will try to figure out a more memory-safe way. The example below has been alterted to just insert the first 500,000 records:
 
 ~~~sh
 $ cat data/all-individuals.csv \
+   | head -n 500000 \
    | csvsql --no-constraints --no-inference  --no-create \
-         --insert --tables fec_donors \
+         --insert --tables individual_donors \
          --db sqlite:///fec_data.sqlite 
 ~~~
+
+TODO: Just insert each individual archive file.
 
 
 ### Create indexes
