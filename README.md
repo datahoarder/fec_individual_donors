@@ -13,7 +13,7 @@ However, the data is separated by cycle, with each file stored as a separate zip
 
 And that's before we've even inserted it into a database, nevermind done any actual analysis.
 
-But if we could efficiently collect all the data, starting from 1980 to 2016, then we would have dozens of millions of records to analyze. Stories, such as this [LA Times feature into what Hollywood is donating in this cycle](http://graphics.latimes.com/2016-election-entertainment-donors/), could be repeated across _every election cycle_.
+But if we could efficiently collect all the data, starting from 1980 to 2016, then we would have dozens of millions of records to analyze. Stories, such as this [LA Times feature into what Hollywood is donating in this cycle](http://graphics.latimes.com/2016-election-entertainment-donors/), could be repeated across every election cycle.
 
 ## The command-line solution
 
@@ -150,7 +150,8 @@ $ seq 1980 2 2016 |
 
 The messy output:
 
-    curl -O ftp://ftp.fec.gov/FEC/1980/indiv80.zip; curl -O ftp://ftp.fec.gov/FEC/1982/indiv82.zip; curl -O ftp://ftp.fec.gov/FEC/1984/indiv84.zip; curl -O ftp://ftp.fec.gov/FEC/1986/indiv86.zip; curl -O ftp://ftp.fec.gov/FEC/1988/indiv88.zip; curl -O ftp://ftp.fec.gov/FEC/1990/indiv90.zip; curl -O ftp://ftp.fec.gov/FEC/1992/indiv92.zip; curl -O ftp://ftp.fec.gov/FEC/1994/indiv94.zip; curl -O ftp://ftp.fec.gov/FEC/1996/indiv96.zip; curl -O ftp://ftp.fec.gov/FEC/1998/indiv98.zip; curl -O ftp://ftp.fec.gov/FEC/2000/indiv00.zip; curl -O ftp://ftp.fec.gov/FEC/2002/indiv02.zip; curl -O ftp://ftp.fec.gov/FEC/2004/indiv04.zip; curl -O ftp://ftp.fec.gov/FEC/2006/indiv06.zip; curl -O ftp://ftp.fec.gov/FEC/2008/indiv08.zip; curl -O ftp://ftp.fec.gov/FEC/2010/indiv10.zip; curl -O ftp://ftp.fec.gov/FEC/2012/indiv12.zip; curl -O ftp://ftp.fec.gov/FEC/2014/indiv14.zip; curl -O ftp://ftp.fec.gov/FEC/2016/indiv16.zip; DN0a22333c:fec_individuals dtown$ 
+    curl -O ftp://ftp.fec.gov/FEC/1980/indiv80.zip; curl -O ftp://ftp.fec.gov/FEC/1982/indiv82.zip; curl -O ftp://ftp.fec.gov/FEC/1984/indiv84.zip; curl -O ftp://ftp.fec.gov/FEC/1986/indiv86.zip; curl -O ftp://ftp.fec.gov/FEC/1988/indiv88.zip; curl -O ftp://ftp.fec.gov/FEC/1990/indiv90.zip; curl -O ftp://ftp.fec.gov/FEC/1992/indiv92.zip; curl -O ftp://ftp.fec.gov/FEC/1994/indiv94.zip; curl -O ftp://ftp.fec.gov/FEC/1996/indiv96.zip; curl -O ftp://ftp.fec.gov/FEC/1998/indiv98.zip; curl -O ftp://ftp.fec.gov/FEC/2000/indiv00.zip; curl -O ftp://ftp.fec.gov/FEC/2002/indiv02.zip; curl -O ftp://ftp.fec.gov/FEC/2004/indiv04.zip; curl -O ftp://ftp.fec.gov/FEC/2006/indiv06.zip; curl -O ftp://ftp.fec.gov/FEC/2008/indiv08.zip; curl -O ftp://ftp.fec.gov/FEC/2010/indiv10.zip; curl -O ftp://ftp.fec.gov/FEC/2012/indiv12.zip; curl -O ftp://ftp.fec.gov/FEC/2014/indiv14.zip; curl -O ftp://ftp.fec.gov/FEC/2016/indiv16.zip; 
+    
 
 
 Which you can then just copy and paste. Then wait.
