@@ -151,7 +151,7 @@ $ seq 1980 2 2016 |
 The messy output:
 
     curl -O ftp://ftp.fec.gov/FEC/1980/indiv80.zip; curl -O ftp://ftp.fec.gov/FEC/1982/indiv82.zip; curl -O ftp://ftp.fec.gov/FEC/1984/indiv84.zip; curl -O ftp://ftp.fec.gov/FEC/1986/indiv86.zip; curl -O ftp://ftp.fec.gov/FEC/1988/indiv88.zip; curl -O ftp://ftp.fec.gov/FEC/1990/indiv90.zip; curl -O ftp://ftp.fec.gov/FEC/1992/indiv92.zip; curl -O ftp://ftp.fec.gov/FEC/1994/indiv94.zip; curl -O ftp://ftp.fec.gov/FEC/1996/indiv96.zip; curl -O ftp://ftp.fec.gov/FEC/1998/indiv98.zip; curl -O ftp://ftp.fec.gov/FEC/2000/indiv00.zip; curl -O ftp://ftp.fec.gov/FEC/2002/indiv02.zip; curl -O ftp://ftp.fec.gov/FEC/2004/indiv04.zip; curl -O ftp://ftp.fec.gov/FEC/2006/indiv06.zip; curl -O ftp://ftp.fec.gov/FEC/2008/indiv08.zip; curl -O ftp://ftp.fec.gov/FEC/2010/indiv10.zip; curl -O ftp://ftp.fec.gov/FEC/2012/indiv12.zip; curl -O ftp://ftp.fec.gov/FEC/2014/indiv14.zip; curl -O ftp://ftp.fec.gov/FEC/2016/indiv16.zip; 
-    
+
 
 
 Which you can then just copy and paste. Then wait.
@@ -422,6 +422,8 @@ $ sqlite3 fec_data.sqlite \
 ~~~
 
 ### Insert the data in bulk
+
+Note: Plan on taking an hour break or so before this finishes.
 
 ~~~sh
 $ cat data/all-individuals.csv \
