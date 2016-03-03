@@ -271,9 +271,20 @@ Output:
 
 The __unzip__ command allows us to unzip contents directly to standard out with `-c`. The `q` (i.e. "quiet") option is also needed so that __unzip's__ progress messages aren't sent to stdout.
 
+
+Note: As evidence of how bad my own Unix skills are, I didn't realize that it is quite trivial to unzip multiple things at once, [if you have a good understanding of how shell expansion works](https://chrisjean.com/unzip-multiple-files-from-linux-command-line/):
+
+~~~sh
+$ unzip -qc '*.zip'
+~~~
+
+You can ignore the instructions below unless you really like thinking about regex.
+
+
+
+#### Clunky way of doing it with `ack`
+
 Use __ack__ again to insert each filename into the proper command pattern:
-
-
 
 
 ~~~sh
