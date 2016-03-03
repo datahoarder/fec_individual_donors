@@ -152,7 +152,44 @@ curl -O ftp://ftp.fec.gov/FEC/2016/indiv16.zip
 ~~~
 
 
-## Concatenate into a semi-colon delimited string
+## Alternative bashing
+
+Note: this walkthrough was written for relative Unix newbies who may not know all the intricacies of Unix-land or __curl__ subtleties. In later sections, I describe concatenating all the commands into a giant string delimited with semicolons...**that is not ideal**...but it's kind of commonsensical if all you know is regex. 
+
+Here are more best practices approaches:
+
+
+#### Make a bash script and bash it
+
+1. Output the sequence of `curl` commands to a bash script file
+2. `bash` that file
+
+~~~sh
+$ seq 1980 2 2016 |
+     ack '(\d\d(\d\d))' \
+        --output 'curl -O ftp://ftp.fec.gov/FEC/$1/indiv$2.zip' \
+     > fecbashemall.sh
+
+$ bash fecbashemall.sh
+~~~
+
+#### Use xargs
+
+
+Forget printing everything out as a separate `curl` command; just use `ack` to pipe out a list of filenames into `xargs` and `curl`:
+
+~~~sh
+$ seq 1980 2 2016 |
+     ack '(\d\d(\d\d))' \
+        --output 'ftp://ftp.fec.gov/FEC/$1/indiv$2.zip' \
+     | xargs curl -sO
+
+~~~
+
+
+
+
+## Concatenate into a semicolon delimited string
 
 ~~~sh
 $ seq 1980 2 2016 |
@@ -230,7 +267,7 @@ Output:
     data/zips/indiv08.zip data/zips/indiv80.zip data/zips/indiv90.zip
 
 
-## Unzip those zipped ata files
+## Unzip those zipped data files
 
 The __unzip__ command allows us to unzip contents directly to standard out with `-c`. The `q` (i.e. "quiet") option is also needed so that __unzip's__ progress messages aren't sent to stdout.
 
@@ -365,6 +402,48 @@ The output shows the column names and their indexes:
    21: SUB_ID
 ~~~
 
+You can see their official definitions from the FEC's data dictionary: [DataDictionaryContributionsbyIndividuals.shtml](http://www.fec.gov/finance/disclosure/metadata/DataDictionaryContributionsbyIndividuals.shtml)
+
+
+
+### How many fucks given?
+
+In 25+ years of campaign contributions, how many times have donors dropped the F-bomb? Finding out is as simple as this:
+
+~~~sh
+$ ack 'FUCK' data/all-individuals.csv
+~~~
+
+
+Or, maybe you're just wondering if the occupation and employer fields can be fully trusted; use `csvcut` to filter your search and limit the output:
+
+~~~sh
+$ csvcut -c EMPLOYER,OCCUPATION data/all-individuals.csv \
+   | ack 'FUCK'
+~~~
+
+And here's the results, across 120+ million records:
+
+        FUCK YOU,FUCK YOU
+        FUCKFEDERALLAW,NONEOFYOURBUSINESS!
+        FUCKFEDERALLAW,NONEOFYOURBUSINESS!
+        SELF,FUCKING LOBBYIST
+        NONE,OF YOUR FUCKING BUSINESS
+        OF YOUR FUCKING BUSINESS,NONE
+        SELF EMPLOYED MOTHER FUCKER,ELECTRICIAN
+        HEARST,BAD-ASS FUCKING PROFESSIONAL CHILD
+        SELF EMPLOYED MOTHER FUCKER,ELECTRICIAN
+
+
+
+FWIW, it's worth searching across _all_ the fields for F-bomb fun -- as well as keeping the rest of the context.
+
+
+
+### Finding Hollywood donations
+
+
+It's not enough to restrict the `CITY` and `STATE` fields to New York and "Hollywood"; you'll want to search the `OCCUPATION` field -- though as we saw above, that field is self-described. 
 
 
 For actors, directors, etc. who have donated at least in the 4-digits:
@@ -379,7 +458,11 @@ Warning: this takes a _long_ time, at least several minutes. The output includes
 
 
 
+
 ## Inserting into SQLite
+
+
+(Note: I'm not particularly skilled with SQLite from the command-line...after following the instructions on how to derive the schema using csvsql and create the table, you should probably just import the data using standard means, such as a GUI. csvsql may not be efficient enough in its implementation of row insertion to handle 124 million rows)
 
 While doing data work with plaintext CSV is perfectly fine...within reason...maybe you feel safer with these hundreds of millions of records in SQL?
 
