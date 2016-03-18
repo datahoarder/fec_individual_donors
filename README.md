@@ -1,4 +1,4 @@
-# Gathering all the FEC bluk detailed data with the command line and regular expressions
+# Gathering 25+ years of Federal Election Commission bulk detailed data using the command line and regular expressions
 
 [The Federal Election Commission contains a massive archive](http://www.fec.gov/finance/disclosure/ftpdet.shtml) of U.S. campaign finance data. The data is stored as flat, delmited text files. 
 
@@ -481,7 +481,7 @@ The awesome __csvsql__ command can be used to both quickly create the schema bas
 
 ### Derive the schema
 
-Grab first and last 2000 liens of the data file.
+Grab first and last 2000 lines of the data file.
 
 ~~~sh
 $ cat <(head -n 2000  data/all-individuals.csv) \
@@ -528,9 +528,11 @@ $ sqlite3 fec_data.sqlite \
         | csvsql --tables individual_donors --no-constraints -i sqlite)
 ~~~
 
-### Insert the data in bulk
+## Insert the data in bulk
 
-Note: Actually, probably not a good idea to try to insert all the data at once. Will try to figure out a more memory-safe way. The example below has been alterted to just insert the first 500,000 records:
+It's not a good idea to try to insert all the data at once; csvsql wasn't really designed to be memory-efficient for that kind of bulk loading.
+
+The example below has been altered to just insert the first 500,000 records:
 
 ~~~sh
 $ cat data/all-individuals.csv \
@@ -543,7 +545,33 @@ $ cat data/all-individuals.csv \
 TODO: Just insert each individual archive file.
 
 
+### Use table
+
+[Alan Palazzolo of WNYC](https://twitter.com/zzolo) recently released [tables, a Node-based command-line utility specifically for pushing CSVs into SQL databases](https://github.com/datanews/tables). 
+
+Here was the command I used to push the `all-individuals.csv` file into an already-initialized SQLite database named `fec_data.sqlite`:
+
+~~~sh
+tables --input data/all-individuals.csv \
+       --db="sqlite://fec_data.sqlite" \
+       --table-name 'individual_donors' 
+~~~
+
+
+Worked like a charm -- in fact, never took more than 200MB of memory during the operation, so probably could stand to be _more_ greedy. It took a little more than __2 hours__ to import 3.83GB of data and create a 6.5GB SQlite database, while not hogging my laptop's resources for other work.
+
+Despite the current warning that says __tables__ might not work in Node 5.x, I had no issues with 5.1.1:
+
+![image tables-progressbar.png](/assets/images/tables-progressbar.png)
+
+Check out the [tables repo at datanews/tables](https://github.com/datanews/tables) -- looks very promising, with neat features such as: automatic index/type guessing, resumable imports, JSON-to-tables, and of course, memory efficiency.
+
+
+
+
 ### Create indexes
+
+It's better to create the indexes _after_ the bulk import; we can send them in straight through the command line:
 
 
 ~~~sh
