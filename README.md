@@ -545,9 +545,9 @@ $ cat data/all-individuals.csv \
 TODO: Just insert each individual archive file.
 
 
-### Use table
+### Use datanews/tables, a data-to-SQL importer in Node.js
 
-[Alan Palazzolo of WNYC](https://twitter.com/zzolo) recently released [tables, a Node-based command-line utility specifically for pushing CSVs into SQL databases](https://github.com/datanews/tables). 
+[Alan Palazzolo of WNYC](https://twitter.com/zzolo) recently released [__tables__, a Node-based command-line utility specifically for pushing massive CSVs into SQL databases](https://github.com/datanews/tables). 
 
 Here was the command I used to push the `all-individuals.csv` file into an already-initialized SQLite database named `fec_data.sqlite`:
 
